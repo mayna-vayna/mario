@@ -4,7 +4,13 @@ set(PROJECT_NAME Mario)
 
 project(${PROJECT_NAME})
 
-add_executable(${PROJECT_NAME} src/main.cpp)
+set(CMAKE_XX_STANDART 17)
+
+add_executable(${PROJECT_NAME}
+src/main.cpp
+src/Rendering/ShaderProgram.cpp
+src/Rendering/ShaderProgram.h
+)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
