@@ -6,6 +6,16 @@
 #include <fstream>
 #include <iostream>
 
+// подключение  stb image для загрузки текстур
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_ONLY_JPEG
+#include "stb_image.h"
+
+
+
+
+
+
 ResourceManager::ResourceManager(const std::string& executablePath)
 {
     // записываем путь от / или "\"
@@ -80,4 +90,25 @@ std::shared_ptr<Rendering::ShaderProgram> ResourceManager::getShaderProgram(cons
     }
     std::cerr << "Can't find the shader program: " << shaderName << std::endl;
     return nullptr;
+}
+
+
+void ResourceManager::loadTexture(const std::string& textureName, const std::string& texturePath)
+{
+    //rgba каналы
+    int channels = 0;
+    int width = 0;
+    int height = 0;
+
+    // так как в openGL текстуры обрабатываются снизу вверх а stbi_image наоборот, переворачиваем картинку
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char* pixels = stbi_load(std::string(m_path + "/" + texturePath).c_str(), &width, &height, &channels, 0);
+
+    if (!pixels)
+    {
+        std::cerr << "Can't load image: " << texturePath << std::endl;
+        return;
+    }
+
+    stbi_image_free(pixels);
 }

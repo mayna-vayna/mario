@@ -100,6 +100,11 @@ int main(int argc, char** argv)
             return -1;
         }
 
+        // загружаем текстуру
+
+        resourceManager.loadTexture("DefaultTexture", "res/textures/SAMIR.jpg");
+
+    
 
         GLuint points_vbo = 0;
         glGenBuffers(1, &points_vbo);

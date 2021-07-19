@@ -31,6 +31,10 @@ public:
 
     std::shared_ptr<Rendering::ShaderProgram> getShaderProgram(const std::string& shaderName);
 
+    // Метод загрузки текстур
+
+    void loadTexture(const std::string& textureName, const std::string& texturePath);
+
 private:
 
     // метод возвращения string  с кодом шейдеров из текстовых файлов vertex.txt и fragment.txt
