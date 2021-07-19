@@ -8,6 +8,7 @@
 namespace Rendering
 {
     class ShaderProgram;
+    class Texture2D;
 }
 
 
@@ -33,7 +34,8 @@ public:
 
     // Метод загрузки текстур
 
-    void loadTexture(const std::string& textureName, const std::string& texturePath);
+    std::shared_ptr<Rendering::Texture2D> loadTexture(const std::string& textureName, const std::string& texturePath);
+    std::shared_ptr<Rendering::Texture2D> getTextures(const std::string& TextureName);
 
 private:
 
@@ -44,6 +46,11 @@ private:
 
     typedef std::map<const std::string, std::shared_ptr<Rendering::ShaderProgram>> ShaderProgramsMap;
     ShaderProgramsMap m_shaderPrograms;
+
+    // coхранение списка текстур 
+
+    typedef std::map<const std::string, std::shared_ptr<Rendering::Texture2D>>TexturesMap;
+    TexturesMap m_textures;
 
     // путь к ресурсам
 

@@ -1,6 +1,7 @@
 
 #include "ResourceManager.h"
 #include "../Rendering/ShaderProgram.h"
+#include "../Rendering/Texture2D.h"
 
 #include <sstream>
 #include <fstream>
@@ -93,7 +94,7 @@ std::shared_ptr<Rendering::ShaderProgram> ResourceManager::getShaderProgram(cons
 }
 
 
-void ResourceManager::loadTexture(const std::string& textureName, const std::string& texturePath)
+std::shared_ptr<Rendering::Texture2D> ResourceManager::loadTexture(const std::string& textureName, const std::string& texturePath)
 {
     //rgba каналы
     int channels = 0;
@@ -107,8 +108,32 @@ void ResourceManager::loadTexture(const std::string& textureName, const std::str
     if (!pixels)
     {
         std::cerr << "Can't load image: " << texturePath << std::endl;
-        return;
+        return nullptr;
     }
 
+    // при удаче добовляем текстуру в Map
+    std::shared_ptr<Rendering::Texture2D> newTexture = m_textures.emplace(textureName, std::make_shared<Rendering::Texture2D>(width,
+                                                                                                                              height,
+                                                                                                                              pixels,
+                                                                                                                              channels,
+                                                                                                                              GL_NEAREST,
+                                                                                                                              GL_CLAMP_TO_EDGE)).first->second;
+
     stbi_image_free(pixels);
+
+    return newTexture;
+}
+
+
+std::shared_ptr<Rendering::Texture2D> ResourceManager::getTextures(const std::string& TextureName) {
+    // ищем текстуру по его имени в MAP
+
+    TexturesMap::const_iterator it = m_textures.find(TextureName);
+    if (it != m_textures.end())
+    {
+        return it->second;
+    }
+    std::cerr << "Can't find the shader program: " << TextureName << std::endl;
+    return nullptr;
+
 }
