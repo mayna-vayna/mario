@@ -1,6 +1,7 @@
 #include<iostream>
 #include<glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/vec2.hpp>
 
 #include "Rendering/ShaderProgram.h"
 #include "Resources/ResourceManager.h"
@@ -29,16 +30,17 @@ GLfloat texCoord[] = {
 
 //Global var for size Window
 
-int g_WindowSizeX = 640;
-int g_WindowSizeY = 480;
+glm::ivec2 g_WindowSize(640, 480);
+
+
 
 //window size callback
 void glWindowSizeCallback(GLFWwindow* pWindow, int width, int height) {
 
-    g_WindowSizeX = width;
-    g_WindowSizeY = height;
+    g_WindowSize.x = width;
+    g_WindowSize.y = height;
 
-    glViewport(0, 0, g_WindowSizeX, g_WindowSizeY);
+    glViewport(0, 0, g_WindowSize.x, g_WindowSize.y);
 
 }
 
@@ -70,7 +72,7 @@ int main(int argc, char** argv)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     /* Create a windowed mode window and its OpenGL context */
-    GLFWwindow* pWindow = glfwCreateWindow(g_WindowSizeX, g_WindowSizeY, "Mario", nullptr, nullptr);
+    GLFWwindow* pWindow = glfwCreateWindow(g_WindowSize.x, g_WindowSize.y, "Mario", nullptr, nullptr);
     if (!pWindow)
     {
 
