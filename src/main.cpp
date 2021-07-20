@@ -4,6 +4,7 @@
 
 #include "Rendering/ShaderProgram.h"
 #include "Resources/ResourceManager.h"
+#include "Rendering/Texture2D.h"
 
 using namespace std;
 
@@ -18,6 +19,13 @@ GLfloat colors[] = {
     0.0f, 1.0f, 0.0f,
     0.0f, 0.0f, 1.0f
 };
+
+GLfloat texCoord[] = {
+    0.5f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+};
+
 
 //Global var for size Window
 
@@ -102,7 +110,7 @@ int main(int argc, char** argv)
 
         // загружаем текстуру
 
-        resourceManager.loadTexture("DefaultTexture", "res/textures/SAMIR.jpg");
+        auto tex = resourceManager.loadTexture("DefaultTexture", "res/textures/SAMIR.jpg");
 
     
 
@@ -116,6 +124,11 @@ int main(int argc, char** argv)
         glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
         glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
 
+        GLuint texCoord_vbo = 0;
+        glGenBuffers(1, &texCoord_vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, texCoord_vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(texCoord), texCoord, GL_STATIC_DRAW);
+
         GLuint vao = 0;
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
@@ -128,6 +141,12 @@ int main(int argc, char** argv)
         glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
+        glEnableVertexAttribArray(2);
+        glBindBuffer(GL_ARRAY_BUFFER, texCoord_vbo);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        pDefaultShaderProgram->Use();
+        pDefaultShaderProgram->setInt("tex", 0);
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(pWindow))
@@ -137,6 +156,7 @@ int main(int argc, char** argv)
 
             pDefaultShaderProgram->Use();
             glBindVertexArray(vao);
+            tex->Bind();
             glDrawArrays(GL_TRIANGLES, 0, 3);
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);

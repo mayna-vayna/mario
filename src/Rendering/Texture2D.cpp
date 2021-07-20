@@ -31,6 +31,7 @@ namespace Rendering {
 		// генерируем поинтер текстуры 
 
 		glGenTextures(1, &m_id);
+		glActiveTexture(GL_TEXTURE0);
 
 		// делаем текущей текстуру
 		glBindTexture(GL_TEXTURE_2D, m_id);

@@ -11,6 +11,9 @@ namespace Rendering {
 		bool CompiledShader() const { return m_CompiledShader; }
 		void Use() const;
 
+		// Метод для задавания uniform  в шейдере
+		void setInt(const std::string& name, const GLint value);
+
 		//Запрет на копирование шейдерной программы и некоторых констркукторов
 		ShaderProgram() = delete;
 		ShaderProgram(const ShaderProgram&) = delete;
